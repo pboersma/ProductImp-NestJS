@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { DatasourceModule } from './modules/datasource/datasource.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [
-    DatasourceModule
-  ],
+  imports: [DatasourceModule, ConfigModule.forRoot()],
   controllers: [],
   providers: [],
 })
