@@ -1,13 +1,12 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class CreateDatasourceDto {
+export class CreateAPIConfigurationDto {
   @IsNotEmpty()
-  id: number
+  id: number;
 
   @IsNotEmpty()
-  name: string
+  name: string;
 
   @IsNotEmpty()
-  url: string
+  url: string;
 }
- 
