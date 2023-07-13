@@ -1,12 +1,11 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsString, IsUrl } from 'class-validator';
 
 export class CreateAPIConfigurationDto {
   @IsNotEmpty()
-  id: number;
-
-  @IsNotEmpty()
+  @IsString()
   name: string;
 
   @IsNotEmpty()
+  @IsUrl()
   url: string;
 }
