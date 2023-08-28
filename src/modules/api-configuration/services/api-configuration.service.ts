@@ -20,6 +20,7 @@ export class APIConfigurationService {
   findAll(): Promise<APIConfigurationInterface[]> {
     return this.apiConfigurationRepository.find({
       select: {
+        id: true,
         name: true,
         url: true,
         autoSync: true,
