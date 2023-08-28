@@ -20,7 +20,7 @@ export class APIConfiguration {
   @Column()
   url: string;
 
-  @Column()
+  @Column({ nullable: true })
   authentication: string;
 
   @Column({ default: false })
