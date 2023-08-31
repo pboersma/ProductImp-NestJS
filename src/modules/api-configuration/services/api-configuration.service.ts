@@ -37,9 +37,12 @@ export class APIConfigurationService {
    *
    * @returns { Promise<APIConfiguration> } The found API configuration.
    */
-  async find(id: number): Promise<APIConfiguration> {
+  async find(
+    id: number,
+    columns: any = ['name', 'url'],
+  ): Promise<APIConfiguration> {
     return this.apiConfigurationRepository.findOne({
-      select: ['name', 'url'],
+      select: columns,
       where: {
         id,
       },

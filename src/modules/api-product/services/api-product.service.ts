@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, DeleteResult, Repository } from 'typeorm';
+import { DataSource, DeleteResult, Like, Repository } from 'typeorm';
 import { APIProductInterface } from 'src/shared/interfaces/api-product.interface';
 import { CreateAPIProductDto } from '../dtos/create-api-product.dto';
 import { APIProduct } from 'src/shared/entities/api-product.entity';
@@ -17,35 +17,19 @@ export class APIProductService {
     private apiConfigurationRepository: Repository<APIConfiguration>,
   ) {}
 
-  findAll(): Promise<APIProductInterface[]> {
-    return this.apiProductRepository.find();
-  }
+  async findAll(page = 1, limit = 10, query = ''): Promise<any> {
+    const [items, total] = await this.apiProductRepository.findAndCount({
+      where: {
+        name: Like(`%${query}%`),
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
 
-  /**
-   * Create a new product inside the api_product table
-   *
-   * @param {CreateAPIProductDto} createDto
-   *
-   * @returns {Promise<APIProductInterface>}
-   */
-  async create(createDto: CreateAPIProductDto): Promise<APIProductInterface> {
-    try {
-      // TODO: Replace with Service instead of Repository.
-      const configuration = await this.apiConfigurationRepository.findOne({
-        select: ['name', 'url'],
-        where: {
-          id: +createDto.configuration,
-        },
-      });
-
-      if (!configuration) {
-        throw new Error(ERRORS.UNKNOWN_API_CONFIGURATION);
-      }
-
-      return await this.apiProductRepository.save(createDto);
-    } catch (e) {
-      console.error(e);
-    }
+    return {
+      items,
+      total,
+    };
   }
 
   /**
@@ -59,9 +43,9 @@ export class APIProductService {
     try {
       // TODO: Replace with Service instead of Repository.
       const configuration = await this.apiConfigurationRepository.findOne({
-        select: ['name', 'url'],
+        select: ['id', 'name', 'url'],
         where: {
-          id: 10,
+          id: createDto.configuration,
         },
       });
 

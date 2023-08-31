@@ -91,13 +91,12 @@ export class APIConfigurationController {
     return this.configurationService.delete(id);
   }
 
-  // @Post('sync/:id')
-  // async synchronizeAPIConfiguration(@Param('id') id: number): Promise<any> {
-  //   // Pass the APIConfiguration Instance to
-  //   await this.apiConfigurationQueu.add('api-configuration-sync', { id: id });
+  @Post('sync/:id')
+  async synchronizeAPIConfiguration(@Param('id') id: number): Promise<any> {
+    await this.apiConfigurationQueu.add('api-configuration-sync', { id: id });
 
-  //   return {
-  //     message: 'OK',
-  //   };
-  // }
+    return {
+      message: 'OK',
+    };
+  }
 }

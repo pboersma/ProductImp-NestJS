@@ -16,7 +16,6 @@ export class APIConfigurationConsumer {
   ) {}
 
   private readonly batchSize = 100;
-
   private readonly logger = new Logger(APIConfigurationConsumer.name);
 
   @Process('api-configuration-sync')
@@ -24,7 +23,12 @@ export class APIConfigurationConsumer {
     this.logger.log(`Syncing Api Configuration with id: ${job.data.id}...`);
 
     // Lets get the apiConfiguration from the storage.
-    const apiConfiguration = await this.configurationService.find(job.data.id);
+    const apiConfiguration = await this.configurationService.find(job.data.id, [
+      'id',
+      'name',
+      'url',
+      'authentication',
+    ]);
 
     // Get the data from the API.
     const { data } = await firstValueFrom(
@@ -46,6 +50,7 @@ export class APIConfigurationConsumer {
 
     data.forEach((element) => {
       acceptedData.push({
+        // TODO: Lets make these dynamic
         name: element.name,
         uid: element.ean,
         product: JSON.stringify(element),

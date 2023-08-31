@@ -12,5 +12,5 @@ export class CreateAPIProductDto {
 
   @IsNotEmpty()
   @IsNumber()
-  configuration: APIConfiguration;
+  configuration: number;
 }

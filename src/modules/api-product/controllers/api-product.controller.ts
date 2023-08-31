@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Delete, Param, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Post,
+  Body,
+  Delete,
+  Param,
+  UsePipes,
+  ValidationPipe,
+  DefaultValuePipe,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateAPIProductDto } from '../dtos/create-api-product.dto';
 import { APIProductInterface } from 'src/shared/interfaces/api-product.interface';
@@ -15,15 +27,26 @@ export class APIProductController {
    *
    * @return {Promise<APIProductInterface[]>}
    */
-  getAllProducts(): Promise<APIProductInterface[]> {
-    return this.productService.findAll();
+  getAllProducts(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Query('query', new DefaultValuePipe(''), ValidationPipe) query: string,
+  ): Promise<APIProductInterface[]> {
+    return this.productService.findAll(page, limit, query);
   }
 
-  @Post()
-  @UsePipes(ValidationPipe)
-  async createAPIProduct(
-    @Body() createDto: CreateAPIProductDto,
-  ): Promise<APIProductInterface> {
-    return this.productService.create(createDto);
-  }
+  // @Post()
+  // @UsePipes(ValidationPipe)
+  // async createAPIProduct(
+  //   @Body() createDto: CreateAPIProductDto,
+  // ): Promise<APIProductInterface> {
+  //   return this.productService.create(createDto);
+  // }
 }
+// @Post()
+// @UsePipes(ValidationPipe)
+// async createAPIProduct(
+//   @Body() createDto: CreateAPIProductDto,
+// ): Promise<APIProductInterface> {
+//   return this.productService.create(createDto);
+// }
