@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductMapping } from 'src/shared/entities/product-mapping.entity';
-import { InsertResult, Repository, UpdateResult } from 'typeorm';
+import { InsertResult, Repository, UpdateResult, DeleteResult } from 'typeorm';
 import { CreateProductMappingDto } from '../dtos/create-product-mapping.dto';
 import { ProductMappingInterface } from 'src/shared/interfaces/product-mapping.interface';
 import { UpdateProductMappingDto } from '../dtos/update-product-mapping.dto';
@@ -13,13 +13,19 @@ export class ProductMappingService {
     private productMappingRepository: Repository<ProductMappingInterface>,
   ) {}
 
-  /**
-   * Create a new product mapping.
-   *
-   * @param {CreateProductMappingDto} createDto - The create data for the product mapping.
-   *
-   * @returns {Promise<InsertResult>} The result of the create operation.
-   */
+  async findAll(): Promise<any> {
+    return this.productMappingRepository.find();
+  }
+
+  async find(id: number, columns: any = ['name', 'url']): Promise<any> {
+    return this.productMappingRepository.findOne({
+      select: columns,
+      where: {
+        id,
+      },
+    });
+  }
+
   async create(createDto: CreateProductMappingDto): Promise<InsertResult> {
     try {
       return await this.productMappingRepository.insert(createDto);
@@ -28,13 +34,6 @@ export class ProductMappingService {
     }
   }
 
-  /**
-   * Update an existing product mapping.
-   *
-   * @param {UpdateProductMappingDto} updateDto - The update data for the product mapping.
-   *
-   * @returns {Promise<UpdateResult>} The result of the update operation.
-   */
   async update(updateDto: UpdateProductMappingDto): Promise<UpdateResult> {
     try {
       return await this.productMappingRepository.update(
@@ -48,5 +47,9 @@ export class ProductMappingService {
     } catch (e) {
       throw e;
     }
+  }
+
+  async delete(id: number): Promise<DeleteResult> {
+    return this.productMappingRepository.delete(id);
   }
 }

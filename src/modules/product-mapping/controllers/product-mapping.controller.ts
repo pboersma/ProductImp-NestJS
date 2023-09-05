@@ -1,14 +1,19 @@
 import {
   Controller,
+  Get,
   Post,
+  Param,
+  Delete,
   Body,
   Patch,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { InsertResult, UpdateResult } from 'typeorm';
+import { InsertResult, UpdateResult, DeleteResult } from 'typeorm';
 import { ProductMappingService } from '../services/product-mapping.service';
+
+// DTO
 import { CreateProductMappingDto } from '../dtos/create-product-mapping.dto';
 import { UpdateProductMappingDto } from '../dtos/update-product-mapping.dto';
 
@@ -17,13 +22,11 @@ import { UpdateProductMappingDto } from '../dtos/update-product-mapping.dto';
 export class ProductMappingController {
   constructor(private readonly productMappingService: ProductMappingService) {}
 
-  /**
-   * Create a new product mapping.
-   *
-   * @param {CreateProductMappingDto} createDto - The create data for the product mapping.
-   *
-   * @returns {Promise<InsertResult>} The result of the create operation.
-   */
+  @Get()
+  async getAllProductMappings(): Promise<any> {
+    return this.productMappingService.findAll();
+  }
+
   @Post()
   @UsePipes(ValidationPipe)
   async createProductMapping(
@@ -32,18 +35,16 @@ export class ProductMappingController {
     return this.productMappingService.create(createDto);
   }
 
-  /**
-   * Update an existing product mapping.
-   *
-   * @param {UpdateProductMappingDto} updateDto - The update data for the product mapping.
-   *
-   * @returns {Promise<UpdateResult>} The result of the update operation.
-   */
   @Patch()
   @UsePipes(ValidationPipe)
   async updateProductMapping(
     @Body() updateDto: UpdateProductMappingDto,
   ): Promise<UpdateResult> {
     return this.productMappingService.update(updateDto);
+  }
+
+  @Delete(':id')
+  async deleteProductMapping(@Param('id') id: number): Promise<DeleteResult> {
+    return this.productMappingService.delete(id);
   }
 }
