@@ -11,7 +11,6 @@ export class APIProductConsumer {
   @Process('processBatch')
   async processBatch(job: Job) {
     this.logger.log(`Inserting Product Batch`);
-    // console.log(job.data.products);
     await this.productService.createBulk(job.data.products);
     this.logger.log(`Done Inserting Product Batch`);
   }
