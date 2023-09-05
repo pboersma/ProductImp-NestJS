@@ -7,8 +7,11 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { APIConfiguration } from './api-configuration.entity';
+import { ProductMapping } from './product-mapping.entity';
 
 @Entity()
 export class APIProduct {
@@ -25,6 +28,10 @@ export class APIProduct {
   @Column()
   @Index({ unique: true })
   uid: string;
+
+  @OneToOne(() => ProductMapping, (ProductMapping) => ProductMapping.product)
+  @JoinColumn()
+  mapping: ProductMapping;
 
   @Column()
   name: string;

@@ -22,6 +22,8 @@ export class APIProductService {
       where: {
         name: Like(`%${query}%`),
       },
+      relations: ['mapping'],
+      loadRelationIds: false, // We want to load in the mapping instead of just the ID.
       skip: (page - 1) * limit,
       take: limit,
     });

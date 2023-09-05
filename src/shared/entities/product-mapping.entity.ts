@@ -15,12 +15,11 @@ export class ProductMapping {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => APIProduct)
-  @JoinColumn()
-  product: APIProduct;
-
   @Column({ type: 'json' })
   map: Record<string, any>;
+
+  @OneToOne(() => APIProduct, (APIProduct) => APIProduct.mapping)
+  product: APIProduct;
 
   @CreateDateColumn()
   createdDate: Date;
