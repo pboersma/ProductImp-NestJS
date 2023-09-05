@@ -31,7 +31,7 @@ export class APIConfigurationController {
   /**
    * Get a specific API Configuration through the configuration service
    *
-   * @return {Promise<APIConfigurationInterface[]>}
+   * @return { Promise<APIConfigurationInterface[]> }
    */
   async getAllAPIConfigurations(): Promise<any> {
     return this.configurationService.findAll();
@@ -41,7 +41,7 @@ export class APIConfigurationController {
   /**
    * Get a specific API Configuration through the configuration service
    *
-   * @return {Promise<APIConfigurationInterface[]>}
+   * @return { Promise<APIConfigurationInterface[]> }
    */
   async getSpecificAPIConfiguration(@Param('id') id: number): Promise<any> {
     return this.configurationService.find(id);
@@ -82,15 +82,22 @@ export class APIConfigurationController {
   /**
    * Delete an API configuration by ID.
    *
-   * @param {number} id - The ID of the API configuration to delete.
+   * @param { number } id - The ID of the API configuration to delete.
    *
-   * @returns {Promise<DeleteResult>} The result of the delete operation.
+   * @returns { Promise<DeleteResult> } The result of the delete operation.
    */
   @Delete(':id')
   async deleteAPIConfiguration(@Param('id') id: number): Promise<DeleteResult> {
     return this.configurationService.delete(id);
   }
 
+  /**
+   * Synchronize an API configuration by its ID.
+   *
+   * @param { number } id - The ID of the API configuration to synchronize.
+   *
+   * @returns { Promise<any> } A response object indicating the success of the synchronization.
+   */
   @Post('sync/:id')
   async synchronizeAPIConfiguration(@Param('id') id: number): Promise<any> {
     await this.apiConfigurationQueu.add('api-configuration-sync', { id: id });
