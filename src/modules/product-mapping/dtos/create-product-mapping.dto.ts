@@ -1,6 +1,10 @@
-import { IsJSON, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsJSON, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateProductMappingDto {
+  @IsNumber()
+  @IsOptional()
+  id: number;
+
   @IsNotEmpty()
   @IsNumber()
   product: number;

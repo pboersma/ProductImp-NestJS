@@ -1,55 +1,49 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductMapping } from 'src/shared/entities/product-mapping.entity';
-import { InsertResult, Repository, UpdateResult, DeleteResult } from 'typeorm';
-import { CreateProductMappingDto } from '../dtos/create-product-mapping.dto';
+import { Repository, DeleteResult, InsertResult, UpdateResult } from 'typeorm';
 import { ProductMappingInterface } from 'src/shared/interfaces/product-mapping.interface';
-import { UpdateProductMappingDto } from '../dtos/update-product-mapping.dto';
+import { APIProduct } from 'src/shared/entities/api-product.entity';
+import { ERRORS } from 'src/shared/constants/errors.constants';
 
 @Injectable()
 export class ProductMappingService {
   constructor(
     @InjectRepository(ProductMapping)
     private productMappingRepository: Repository<ProductMappingInterface>,
+    @InjectRepository(APIProduct)
+    private apiProductRepository: Repository<APIProduct>,
   ) {}
 
-  async findAll(): Promise<any> {
+  async findAll(): Promise<ProductMappingInterface[]> {
     return this.productMappingRepository.find();
   }
 
-  async find(id: number, columns: any = ['name', 'url']): Promise<any> {
-    return this.productMappingRepository.findOne({
-      select: columns,
-      where: {
-        id,
-      },
-    });
-  }
-
-  async create(createDto: CreateProductMappingDto): Promise<InsertResult> {
+  async createOrUpdate(map: ProductMappingInterface): Promise<any> {
     try {
-      return await this.productMappingRepository.insert(createDto);
-    } catch (e) {
-      throw e;
-    }
-  }
+      const mapping = await this.productMappingRepository.save(map);
+      await this.linkMappingToProduct(mapping);
 
-  async update(updateDto: UpdateProductMappingDto): Promise<UpdateResult> {
-    try {
-      return await this.productMappingRepository.update(
-        {
-          product: updateDto.product,
-        },
-        {
-          map: updateDto.map,
-        },
-      );
-    } catch (e) {
-      throw e;
+      return mapping;
+    } catch (error) {
+      throw new Error(ERRORS.GENERIC_ERROR);
     }
   }
 
   async delete(id: number): Promise<DeleteResult> {
     return this.productMappingRepository.delete(id);
+  }
+
+  private async linkMappingToProduct(
+    mapping: ProductMappingInterface,
+  ): Promise<void> {
+    try {
+      await this.apiProductRepository.update(
+        { id: mapping.product },
+        { mapping: mapping.id },
+      );
+    } catch (error) {
+      throw new Error(ERRORS.LINK_MAP_TO_PRODUCT);
+    }
   }
 }

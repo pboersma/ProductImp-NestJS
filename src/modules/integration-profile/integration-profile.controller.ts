@@ -10,12 +10,12 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { APIConfigurationService } from '../services/api-configuration.service';
-import { APIConfigurationInterface } from '../../../shared/interfaces/api-configuration.interface';
+import { APIConfigurationInterface } from '../../shared/interfaces/api-configuration.interface';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateAPIConfigurationDto } from '../dtos/create-api-configuration.dto';
 import { UpdateAPIConfigurationDto } from '../dtos/update-api-configuration.dto';
 import { DeleteResult } from 'typeorm';
-import { InjectQueue } from '@nestjs/bull';
+import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 
 @ApiTags('api-configurations')

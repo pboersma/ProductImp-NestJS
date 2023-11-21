@@ -1,23 +1,23 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
-import { APIConfigurationInterface } from 'src/shared/interfaces/api-configuration.interface';
-import { CreateAPIConfigurationDto } from '../dtos/create-api-configuration.dto';
-import { APIConfiguration } from 'src/shared/entities/api-configuration.entity';
+import { IntegrationProfileInterface } from 'src/shared/interfaces/api-configuration.interface';
+import { CreateIntegrationProfileDto } from '../dtos/create-api-configuration.dto';
+import { IntegrationProfile } from 'src/shared/entities/api-configuration.entity';
 
 @Injectable()
-export class APIConfigurationService {
+export class IntegrationProfileService {
   constructor(
-    @InjectRepository(APIConfiguration)
-    private apiConfigurationRepository: Repository<APIConfiguration>,
+    @InjectRepository(IntegrationProfile)
+    private apiConfigurationRepository: Repository<IntegrationProfile>,
   ) {}
 
   /**
    * Gets all the available API Configurions.
    *
-   * @returns { Promise<APIConfigurationInterface[]> }
+   * @returns { Promise<IntegrationProfileInterface[]> }
    */
-  findAll(): Promise<APIConfigurationInterface[]> {
+  findAll(): Promise<IntegrationProfileInterface[]> {
     return this.apiConfigurationRepository.find({
       select: {
         id: true,
@@ -35,12 +35,12 @@ export class APIConfigurationService {
    *
    * @param { number } id - The ID of the API configuration to find.
    *
-   * @returns { Promise<APIConfiguration> } The found API configuration.
+   * @returns { Promise<IntegrationProfile> } The found API configuration.
    */
   async find(
     id: number,
     columns: any = ['name', 'url'],
-  ): Promise<APIConfiguration> {
+  ): Promise<IntegrationProfile> {
     return this.apiConfigurationRepository.findOne({
       select: columns,
       where: {
@@ -52,13 +52,13 @@ export class APIConfigurationService {
   /**
    * Create a new API configuration.
    *
-   * @param { CreateAPIConfigurationDto } createDto - The data for creating the API configuration.
+   * @param { CreateIntegrationProfileDto } createDto - The data for creating the API configuration.
    *
-   * @returns { Promise<APIConfigurationInterface> } The created API configuration.
+   * @returns { Promise<IntegrationProfileInterface> } The created API configuration.
    */
   async create(
-    createDto: CreateAPIConfigurationDto,
-  ): Promise<APIConfigurationInterface> {
+    createDto: CreateIntegrationProfileDto,
+  ): Promise<IntegrationProfileInterface> {
     try {
       return this.apiConfigurationRepository.save(createDto);
     } catch (e) {
@@ -70,14 +70,14 @@ export class APIConfigurationService {
    * Update an existing API configuration by ID.
    *
    * @param { number } id - The ID of the API configuration to update.
-   * @param { Partial<APIConfiguration> } updateData - The partial data for updating the API configuration.
+   * @param { Partial<IntegrationProfile> } updateData - The partial data for updating the API configuration.
    *
-   * @returns { Promise<APIConfiguration> } The updated API configuration.
+   * @returns { Promise<IntegrationProfile> } The updated API configuration.
    */
   async update(
     id: number,
-    updateData: Partial<APIConfiguration>,
-  ): Promise<APIConfiguration> {
+    updateData: Partial<IntegrationProfile>,
+  ): Promise<IntegrationProfile> {
     const entityToUpdate = await this.apiConfigurationRepository.findOne({
       select: ['id', 'name', 'url'],
       where: {

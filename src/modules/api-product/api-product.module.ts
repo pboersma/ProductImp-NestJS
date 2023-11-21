@@ -6,7 +6,7 @@ import { APIProductController } from './controllers/api-product.controller';
 import { APIProductService } from './services/api-product.service';
 import { APIConfigurationService } from '../api-configuration/services/api-configuration.service';
 import { APIConfiguration } from 'src/shared/entities/api-configuration.entity';
-import { BullModule } from '@nestjs/bull';
+import { BullModule } from '@nestjs/bullmq';
 import { APIProductConsumer } from './consumers/api-products.consumer';
 
 @Module({
