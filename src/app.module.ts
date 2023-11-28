@@ -3,17 +3,13 @@ import { Module } from '@nestjs/common';
 // NestJS Modules
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BullModule } from '@nestjs/bull';
+// import { BullModule } from '@nestjs/bull';
 
 // Project Modules
-import { APIProductModule } from './modules/api-product/api-product.module';
-import { APIConfigurationModule } from './modules/api-configuration/api-configuration.module';
-import { ProductMappingModule } from './modules/product-mapping/api-product.module';
+import IntegrationProfilesModule from './modules/integration-profiles/integration-profiles.module';
 
 // TypeORM Entities
-import { APIConfiguration } from './shared/entities/api-configuration.entity';
-import { APIProduct } from './shared/entities/api-product.entity';
-import { ProductMapping } from './shared/entities/product-mapping.entity';
+import IntegrationProfilesEntity from './modules/integration-profiles/integration-profiles.entity';
 
 @Module({
   imports: [
@@ -25,19 +21,11 @@ import { ProductMapping } from './shared/entities/product-mapping.entity';
       username: process.env.MYSQL_USERNAME,
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_DATABASE,
-      entities: [APIConfiguration, APIProduct, ProductMapping],
+      entities: [IntegrationProfilesEntity],
       synchronize: true,
     }),
-    BullModule.forRoot({
-      redis: {
-        host: process.env.REDIS_HOST,
-        port: +process.env.REDIS_PORT,
-      },
-    }),
-    // Rest API Modules
-    APIConfigurationModule,
-    APIProductModule,
-    ProductMappingModule,
+    // REST API Modules
+    IntegrationProfilesModule,
   ],
   controllers: [],
   providers: [],
