@@ -17,4 +17,10 @@ export default class IntegrationProfilesEntity {
     enum: IntegrationType,
   })
   type: string;
+
+  @Column({
+    type: 'boolean',
+    default: false,
+  })
+  is_synchronizable: boolean; // TODO: Change name, Is not descriptive of the actual situation.
 }

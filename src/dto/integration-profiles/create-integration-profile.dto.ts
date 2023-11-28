@@ -1,5 +1,5 @@
 import BaseDTO from 'src/dto/base.dto';
-import { IsEnum, IsNotEmpty, IsString, IsUrl } from 'class-validator';
+import { IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString, IsUrl } from 'class-validator';
 import { IntegrationType } from 'src/types/integration-profiles.types';
 
 export default abstract class CreateIntegrationProfileDTO implements BaseDTO {
@@ -14,4 +14,8 @@ export default abstract class CreateIntegrationProfileDTO implements BaseDTO {
   @IsNotEmpty()
   @IsEnum(IntegrationType)
   type: IntegrationType;
+
+  @IsOptional()
+  @IsBoolean()
+  is_synchronizable: boolean; // TODO: Change name, Is not descriptive of the actual situation.
 }

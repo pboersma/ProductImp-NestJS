@@ -1,0 +1,6 @@
+username = doadmin
+password = ************************ show
+host = productimp-development-do-user-3939481-0.c.db.ondigitalocean.com
+port = 25060
+database = defaultdb
+sslmode = REQUIRED

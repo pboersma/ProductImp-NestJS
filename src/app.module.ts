@@ -8,7 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import IntegrationProfilesModule from './modules/integration-profiles/integration-profiles.module';
 
 // TypeORM Entities
-import IntegrationProfilesEntity from './modules/integration-profiles/integration-profiles.entity';
+import IntegrationProfilesEntity from 'src/entities/integration-profiles.entity';
 
 @Module({
   imports: [
