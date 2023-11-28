@@ -32,7 +32,7 @@ export default interface BaseControllerInterface {
    * @method
    * @returns {Promise<ObjectLiteral>} A promise that resolves to an object representing the created resource.
    */
-  createResource(dto: BaseDTO): ObjectLiteral;
+  createResource(resource: BaseDTO): ObjectLiteral;
 
   /**
    * Update an existing resource.
@@ -41,7 +41,7 @@ export default interface BaseControllerInterface {
    * @method
    * @returns {Promise<ObjectLiteral>} A promise that resolves to an object representing the updated resource.
    */
-  updateResource(identifier: number, resource: any): Promise<ObjectLiteral>;
+  updateResource(identifier: number, resource: BaseDTO): Promise<ObjectLiteral>;
 
   /**
    * Delete a resource.
