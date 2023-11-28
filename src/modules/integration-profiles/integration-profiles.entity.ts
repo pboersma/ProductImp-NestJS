@@ -1,13 +1,5 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToMany,
-  CreateDateColumn,
-  DeleteDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-// import { APIProduct } from './api-product.entity';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { IntegrationType } from 'src/types/integration-profiles.types';
 
 @Entity('integration-profiles')
 export default class IntegrationProfilesEntity {
@@ -20,24 +12,9 @@ export default class IntegrationProfilesEntity {
   @Column()
   url: string;
 
-  // @Column({ nullable: true })
-  // authentication: string;
-
-  // @Column({ default: false })
-  // autoSync: boolean;
-
-  // @OneToMany(() => APIProduct, (product) => product.configuration)
-  // products: APIProduct[];
-
-  // @CreateDateColumn()
-  // createdDate: Date;
-
-  // @UpdateDateColumn()
-  // updatedDate: Date;
-
-  // @DeleteDateColumn()
-  // deletedDate: Date;
-
-  // @Column({ type: 'timestamp', nullable: true })
-  // syncDate: Date;
+  @Column({
+    type: 'enum',
+    enum: IntegrationType,
+  })
+  type: string;
 }

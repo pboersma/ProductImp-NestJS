@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
   Put,
@@ -11,23 +10,19 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import BaseControllerInterface from 'src/interfaces/base-controller.interface';
-import IntegrationProfilesService from './integration-profiles.service';
-import CreateIntegrationProfileDTO from './dto/create-integration-profile.dto';
 import { ObjectLiteral } from 'typeorm';
-import UpdateIntegrationProfileDTO from './dto/update-integration-profile.dto';
-import { HTTP_ERRORS } from 'src/constants/errors.constants';
+import ControllerInterface from 'src/interfaces/controller.interface';
+import CreateIntegrationProfileDTO from 'src/dto/integration-profiles/create-integration-profile.dto';
+import UpdateIntegrationProfileDTO from 'src/dto/integration-profiles/update-integration-profile.dto';
+import IntegrationProfilesService from './integration-profiles.service';
 
 @ApiTags('integration-profiles')
 @Controller('integration-profiles')
-export default class IntegrationProfiles implements BaseControllerInterface {
+export default class IntegrationProfiles implements ControllerInterface {
   constructor(
     private readonly integrationProfilesService: IntegrationProfilesService,
   ) {}
 
-  /**
-   * @inheritDoc
-   */
   @Post()
   @UsePipes(ValidationPipe)
   async createResource(
@@ -36,66 +31,40 @@ export default class IntegrationProfiles implements BaseControllerInterface {
     return await this.integrationProfilesService.create(integrationProfileDto);
   }
 
-  /**
-   * @inheritDoc
-   */
   @Get()
   async listResources(): Promise<ObjectLiteral> {
     return await this.integrationProfilesService.findAll();
   }
 
-  /**
-   * @inheritDoc
-   */
   @Get(':identifier')
   async getResourceById(
     @Param('identifier') identifier: number,
   ): Promise<ObjectLiteral> {
-    const resource = await this.integrationProfilesService.findSpecific(
+    return await this.integrationProfilesService.findSpecific(
+      {
+        name: true,
+        url: true,
+      },
       identifier,
     );
-
-    if (!resource) {
-      throw new NotFoundException(HTTP_ERRORS.NOT_FOUND);
-    }
-
-    return resource;
   }
 
-  /**
-   * @inheritDoc
-   */
   @Put(':identifier')
   @UsePipes(ValidationPipe)
   async updateResource(
     @Param('identifier') identifier: number,
     @Body() integrationProfileDto: UpdateIntegrationProfileDTO,
   ): Promise<ObjectLiteral> {
-    const resource = await this.integrationProfilesService.update(
+    return await this.integrationProfilesService.update(
       identifier,
       integrationProfileDto,
     );
-
-    if (!resource) {
-      throw new NotFoundException(HTTP_ERRORS.NOT_FOUND);
-    }
-
-    return resource;
   }
 
-  /**
-   * @inheritDoc
-   */
   @Delete(':identifier')
   async deleteResource(
     @Param('identifier') identifier: number,
   ): Promise<ObjectLiteral> {
-    const resource = await this.integrationProfilesService.delete(identifier);
-
-    if (!resource) {
-      throw new NotFoundException(HTTP_ERRORS.NOT_FOUND);
-    }
-
-    return resource;
+    return await this.integrationProfilesService.delete(identifier);
   }
 }

@@ -7,7 +7,7 @@ import { ObjectLiteral } from 'typeorm';
  *
  * @interface
  */
-export default interface BaseControllerInterface {
+export default interface ControllerInterface {
   /**
    * Retrieve a list of resources.
    *

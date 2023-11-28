@@ -3,7 +3,6 @@ import { Module } from '@nestjs/common';
 // NestJS Modules
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-// import { BullModule } from '@nestjs/bull';
 
 // Project Modules
 import IntegrationProfilesModule from './modules/integration-profiles/integration-profiles.module';
